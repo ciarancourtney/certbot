@@ -16,6 +16,8 @@ Certbot adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+* Handle dot-style wildcard domains like star-style domains
+
 *
 
 Despite us having broken lockstep, we are continuing to release new versions of
