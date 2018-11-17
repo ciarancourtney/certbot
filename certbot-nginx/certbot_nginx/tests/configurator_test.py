@@ -87,12 +87,11 @@ class NginxConfiguratorTest(util.NginxTest):
     @mock.patch("certbot_nginx.configurator.socket.gethostbyaddr")
     def test_get_all_names(self, mock_gethostbyaddr):
         mock_gethostbyaddr.return_value = ('155.225.50.69.nephoscale.net', [], [])
-        names = self.config.get_all_names()
-        self.assertEqual(names, set(
-            ["155.225.50.69.nephoscale.net", "www.example.org", "another.alias",
-             "migration.com", "summer.com", "geese.com", "sslon.com",
-             "globalssl.com", "globalsslsetssl.com", "ipv6.com", "ipv6ssl.com",
-             "headers.com"]))
+        actual_names = self.config.get_all_names()
+        expected_names = {'example.com', 'headers.com', 'geese.com', 'ipv6ssl.com', '155.225.50.69.nephoscale.net',
+                          'globalsslsetssl.com', 'another.alias', 'www.example.org', 'sslon.com',
+                          'migration.com', 'ipv6.com', 'summer.com', 'globalssl.com'}
+        self.assertEqual(expected_names, actual_names)
 
     def test_supported_enhancements(self):
         self.assertEqual(['redirect', 'ensure-http-header', 'staple-ocsp'],
@@ -158,7 +157,7 @@ class NginxConfiguratorTest(util.NginxTest):
     def _test_choose_vhosts_common(self, name, conf):
         conf_names = {'localhost_conf': set(['localhost', r'~^(www\.)?(example|bar)\.']),
                  'server_conf': set(['somename', 'another.alias', 'alias']),
-                 'example_conf': set(['.example.com', 'example.*']),
+                 'example_conf': set(['*.example.com', 'example.com', 'example.*']),
                  'foo_conf': set(['*.www.foo.com', '*.www.example.com']),
                  'ipv6_conf': set(['ipv6.com'])}
 

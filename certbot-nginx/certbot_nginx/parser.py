@@ -749,7 +749,13 @@ def _parse_server_raw(server):
                 if addr.ssl:
                     ssl = True
         elif directive[0] == 'server_name':
-            names.update(x.strip('"\'') for x in directive[1:])
+            for server_name in directive[1:]:
+                server_name = server_name.strip('"\'')
+                if server_name.startswith('.'):
+                    # expand .example.com into *.example.com and example.com
+                    names.update(('*' + server_name, server_name[1:]))
+                else:
+                    names.add(server_name)
         elif _is_ssl_on_directive(directive):
             ssl = True
             apply_ssl_to_all_addrs = True

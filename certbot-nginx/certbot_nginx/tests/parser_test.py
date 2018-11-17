@@ -146,7 +146,7 @@ class NginxParserTest(util.NginxTest): #pylint: disable=too-many-public-methods
                                   obj.Addr('127.0.0.1', '', False, False,
                                            False, False)],
                                  False, True,
-                                 set(['.example.com', 'example.*']), [], [0])
+                                 set(['*.example.com', 'example.com', 'example.*']), [], [0])
         vhost4 = obj.VirtualHost(nparser.abs_path('sites-enabled/default'),
                                  [obj.Addr('myhost', '', False, True,
                                            False, False),
